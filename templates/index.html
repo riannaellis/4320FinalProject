@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-4320 Trip Reservation System</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/admin-login">Admin</a></li>
+                <li><a href="/reserve">Reservations</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>IT-4320 Trip Reservation System</h1>
+        <p>Welcome to the IT-4320 reservation system. Use the select box to choose whether to make a reservation or log in as an administrator.</p>
+
+        <form action="/" method="post">
+            <label for="menu-option">Choose Menu Option:</label>
+            <select name="menu-option" id="menu-option" required>
+                <option value="">Choose an Option</option>
+                <option value="admin">Admin Login</option>
+                <option value="reserve">Reserve a Seat</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+</body>
+</html>

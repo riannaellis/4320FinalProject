@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trip_reservation_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - ./database:/app/database  # Mount the database folder
+    environment:
+      FLASK_DEBUG: "1"
