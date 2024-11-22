@@ -33,14 +33,45 @@ def index():
 # Create app route for admin-login to avoid crashes for now.
 @app.route("/admin-login")
 def admin_login():
-    return "Admin Login Page"
+    if request.method == 'POST':
+        # Here you can handle the login logic
+        username = request.form['username']
+        password = request.form['password']
+        # For example, check if the username and password are correct
+        if username == 'admin' and password == 'password':  # replace with actual login logic
+            return redirect(url_for('dashboard'))  # Redirect to another page if login is successful
+        else:
+            return "Invalid username/password combination"
+
+    return render_template('admin_login.html') 
+
+# Initialize the seating chart (O = available, X = reserved)
+rows, seats_per_row = 10, 5
+seating_chart = [['O' for _ in range(seats_per_row)] for _ in range(rows)]
 
 # Create app route for reserve to avoid crashes for now.
 @app.route("/reserve")
 def reserve_seat():
-    return "Reservation Page"
+    global seating_chart
+    message = None
+
+    if request.method == 'POST':
+        # Get form data
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        row = int(request.form['row'])
+        seat = int(request.form['seat'])
+
+        # Reserve seat if available
+        if seating_chart[row][seat] == 'O':
+            seating_chart[row][seat] = 'X'
+            message = f"Seat {seat} in row {row} reserved for {first_name} {last_name}."
+        else:
+            message = f"Seat {seat} in row {row} is already reserved."
+
+    return render_template('reserve_seat.html')
 
 # Run the Flask app
 if __name__ == "__main__":
     initialize_database()
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5001)

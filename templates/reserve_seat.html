@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve Your Seat</title>
+    <link rel="stylesheet" href="/static/reservestyle.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Reserve Your Seat</h1>
+        <div class="seating-chart">
+            <p>X = Reserved Seat : O = Available Seat</p>
+            <pre>{{ seating_chart }}</pre>
+        </div>
+        <form method="POST">
+            <div class="form-group">
+                <label for="first-name">First Name</label>
+                <input type="text" id="first-name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name</label>
+                <input type="text" id="last-name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="row">Choose a Row:</label>
+                <select id="row" name="row" required>
+                    <option value="">Choose a Row</option>
+                    {% for i in range(rows) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="seat">Choose a Seat:</label>
+                <select id="seat" name="seat" required>
+                    <option value="">Choose a Seat</option>
+                    {% for i in range(seats_per_row) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
