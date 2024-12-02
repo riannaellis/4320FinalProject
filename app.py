@@ -46,7 +46,8 @@ def admin_login():
     return render_template('admin_login.html') 
 
 # Initialize the seating chart (O = available, X = reserved)
-rows, seats_per_row = 10, 5
+rows = 10
+seats_per_row = 5
 seating_chart = [['O' for _ in range(seats_per_row)] for _ in range(rows)]
 
 # Create app route for reserve to avoid crashes for now.
@@ -69,7 +70,7 @@ def reserve_seat():
         else:
             message = f"Seat {seat} in row {row} is already reserved."
 
-    return render_template('reserve_seat.html')
+    return render_template('reserve_seat.html', seating_chart=seating_chart, rows=len(seating_chart), message=message, seats_per_row=seats_per_row)
 
 # Run the Flask app
 if __name__ == "__main__":
