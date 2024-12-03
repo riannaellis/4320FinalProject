@@ -8,6 +8,15 @@
 </head>
 <body>
     <div class="container">
+        <div class="content">
+
+            {%for message in get_flashed_messages()%}
+                <div class="alert">
+                    {{ message }}
+                </div>
+            {%endfor%}
+            {% block content %} {% endblock %}
+        </div>
         <h1>Reserve Your Seat</h1>
         <div class="seating-chart">
             <p>X = Reserved Seat : O = Available Seat</p>
@@ -23,12 +32,8 @@
         </div>
         <form method="POST">
             <div class="form-group">
-                <label for="first-name">First Name</label>
-                <input type="text" id="first-name" name="first_name" required>
-            </div>
-            <div class="form-group">
-                <label for="last-name">Last Name</label>
-                <input type="text" id="last-name" name="last_name" required>
+                <label for="name">Passenger Name:</label>
+                <input type="text" id="name" name="name" required>
             </div>
             <div class="form-group">
                 <label for="row">Choose a Row:</label>

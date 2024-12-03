@@ -65,3 +65,10 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.alert {
+    padding: 20px;
+    margin: 5px;
+    color: #970020;
+    background-color: #ffd5de;
+}

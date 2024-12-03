@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
 
 app = Flask(__name__)
+app.config["DEBUG"] = True
+app.config["SECRECT_KEY"] = 'your secret key'
+app.secret_key = 'your secret key'
 
 # Create def to initialize the database
 def initialize_database():
@@ -46,7 +49,7 @@ def admin_login():
     return render_template('admin_login.html') 
 
 # Create app route for reserve to avoid crashes for now.
-@app.route("/reserve")
+@app.route("/reserve", methods=["GET", "POST"])
 def reserve_seat():
 
     #Initialize seating chart
@@ -68,23 +71,52 @@ def reserve_seat():
         seat_column = seat['seatColumn']
         seating_chart[seat_row][seat_column] = "X"
 
-    message = None
-
     if request.method == 'POST':
         # Get form data
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        row = int(request.form['row'])
-        seat = int(request.form['seat'])
+        passengerName = request.form['name']
+        seatRow = int(request.form['row'])
+        seatColumn = int(request.form['seat'])
+        eTicketNumber = get_eTicketNumber(passengerName)
 
         # Reserve seat if available
-        if seating_chart[row][seat] == 'O':
-            seating_chart[row][seat] = 'X'
-            message = f"Seat {seat} in row {row} reserved for {first_name} {last_name}."
+        if seating_chart[seatRow][seatColumn] == 'O':
+            query = 'INSERT INTO reservations (passengerName, seatRow, seatColumn, eTicketNumber) VALUES (?, ?, ?, ?);'
+            cursor.execute(query, (passengerName, seatRow, seatColumn, eTicketNumber))
+            mydb.commit()
+            flash(f"Congratuations {passengerName}! Row: {seatRow}, Seat: {seatColumn} is now reserved for you. Enjoy your trip!\nYour eticket number is: {eTicketNumber}")
         else:
-            message = f"Seat {seat} in row {row} is already reserved."
+            flash(f"Row: {seatRow}, Seat: {seatColumn} is already assigned. Choose again.")
 
-    return render_template('reserve_seat.html', seating_chart=seating_chart, rows=len(seating_chart), message=message, seats_per_row=seats_per_row)
+    return render_template('reserve_seat.html', seating_chart=seating_chart, rows=len(seating_chart), seats_per_row=seats_per_row)
+
+def get_eTicketNumber(passengerName):
+    course = "INFOTC4320"
+    eTicketNumber = ""
+
+    length_course = len(course)
+    length_name = len(passengerName)
+
+    min_length = 0
+    if length_course >= length_name:
+        min_length = length_name
+    else:
+        min_length = length_course
+    
+    for i in range(min_length):
+        eTicketNumber = "".join(passengerName[1] + course[1])
+    
+    eTicketNumber += passengerName[min_length:] + course[min_length:]
+
+    return eTicketNumber
+
+
+
+
+
+
+
+
+
 
 # Run the Flask app
 if __name__ == "__main__":
