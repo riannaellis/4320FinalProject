@@ -34,21 +34,38 @@ def index():
     return render_template("index.html")
 
 # Create app route for admin-login to avoid crashes for now.
-@app.route("/admin-login")
+@app.route("/admin-login", methods=["GET", "POST"])
 def admin_login():
     if request.method == 'POST':
-        # Here you can handle the login logic
+        
         username = request.form['username']
         password = request.form['password']
-        # For example, check if the username and password are correct
-        if username == 'admin' and password == 'password':  # replace with actual login logic
-            return redirect(url_for('dashboard'))  # Redirect to another page if login is successful
-        else:
-            return "Invalid username/password combination"
+
+        #Get admin credentials from database
+        mydb = sqlite3.connect("database/reservations.db")
+        mydb.row_factory = sqlite3.Row
+        cursor = mydb.cursor()
+
+        try:
+            query = "SELECT * FROM admins WHERE username = ? AND password = ?;"
+            cursor.execute(query, (username, password))
+            result = cursor.fetchone()
+
+            if result:
+                return redirect(url_for('admin_dashboard'))
+            else:
+                flash(f"Username and/or password incorrect. Please try again.")
+        except:
+            flash(f"An error ocurred. Please try again.")
 
     return render_template('admin_login.html') 
 
-# Create app route for reserve to avoid crashes for now.
+# Create route for admin dashboard
+@app.route("/admin-dashboard")
+def admin_dashboard():
+    return render_template("admin_dashboard.html")
+
+# Create app route for reserve
 @app.route("/reserve", methods=["GET", "POST"])
 def reserve_seat():
 
@@ -91,6 +108,7 @@ def reserve_seat():
 
     return render_template('reserve_seat.html', seating_chart=seating_chart, rows=len(seating_chart), seats_per_row=seats_per_row)
 
+#Function to get the eTicketNumber
 def get_eTicketNumber(passengerName):
     course = "INFOTC4320"
     eTicketNumber = ""
