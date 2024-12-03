@@ -45,15 +45,29 @@ def admin_login():
 
     return render_template('admin_login.html') 
 
-# Initialize the seating chart (O = available, X = reserved)
-rows = 10
-seats_per_row = 5
-seating_chart = [['O' for _ in range(seats_per_row)] for _ in range(rows)]
-
 # Create app route for reserve to avoid crashes for now.
 @app.route("/reserve")
 def reserve_seat():
-    global seating_chart
+
+    #Initialize seating chart
+    rows = 12
+    seats_per_row = 4
+    seating_chart = [['O' for _ in range(seats_per_row)] for _ in range(rows)]
+   
+    #Get seating chart data from database
+    mydb = sqlite3.connect("database/reservations.db")
+    mydb.row_factory = sqlite3.Row
+    cursor = mydb.cursor()
+    query = "SELECT seatRow, seatColumn FROM reservations;"
+    cursor.execute(query)
+    reserved_seats = [dict(row) for row in cursor.fetchall()]
+
+    #Replace reserved seats with X
+    for seat in reserved_seats:
+        seat_row = seat['seatRow']
+        seat_column = seat['seatColumn']
+        seating_chart[seat_row][seat_column] = "X"
+
     message = None
 
     if request.method == 'POST':
