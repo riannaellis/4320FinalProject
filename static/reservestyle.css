@@ -2,9 +2,6 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
 }
@@ -14,16 +11,17 @@ body {
     background-color: #ffffff;
     padding: 20px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid black;
     border-radius: 5px;
+    margin: 120px auto;
+    margin-top: 50px;
 }
 
 h1 {
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 2px solid black;
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-    border-bottom: 1px solid #dcdcdc;
-    padding-bottom: 10px;
 }
 
 .seating-chart {
@@ -71,4 +69,29 @@ button:hover {
     margin: 5px;
     color: #970020;
     background-color: #ffd5de;
+}
+
+nav {
+    width: 100%; 
+    background-color: #fff; 
+    border-bottom: 2px solid black; 
+    padding: 25px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; 
+    text-align: center; 
+}
+
+nav ul li {
+    display: inline; 
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
 }
