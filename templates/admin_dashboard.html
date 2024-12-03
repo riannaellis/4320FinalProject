@@ -16,6 +16,19 @@
             </ul>
         </nav>
     </header>
+    <div class="container">
+        <div class="content">
+
+            {%for message in get_flashed_messages()%}
+                <div class="alert">
+                    {{ message }}
+                </div>
+            {%endfor%}
+            {% block content %} {% endblock %}
+        </div>
+        <h1>Seating Chart</h1>
+        
+    </div>
 
 </body>
 </html>
