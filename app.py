@@ -90,7 +90,9 @@ def reserve_seat():
 
     if request.method == 'POST':
         # Get form data
-        passengerName = request.form['name']
+        firstName = request.form['name']
+        lastName = request.form['last_name']
+        passengerName = firstName + lastName
         seatRow = int(request.form['row'])
         seatColumn = int(request.form['seat'])
         eTicketNumber = get_eTicketNumber(passengerName)
@@ -100,7 +102,7 @@ def reserve_seat():
             query = 'INSERT INTO reservations (passengerName, seatRow, seatColumn, eTicketNumber) VALUES (?, ?, ?, ?);'
             cursor.execute(query, (passengerName, seatRow, seatColumn, eTicketNumber))
             mydb.commit()
-            flash(f"Congratuations {passengerName}! Row: {seatRow}, Seat: {seatColumn} is now reserved for you. Enjoy your trip!\nYour eticket number is: {eTicketNumber}")
+            flash(f"Congratuations {firstName} {lastName}! Row: {seatRow}, Seat: {seatColumn} is now reserved for you. Enjoy your trip!\nYour eticket number is: {eTicketNumber}")
         else:
             flash(f"Row: {seatRow}, Seat: {seatColumn} is already assigned. Choose again.")
 
