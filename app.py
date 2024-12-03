@@ -95,7 +95,7 @@ def reserve_seat():
         passengerName = firstName + lastName
         seatRow = int(request.form['row'])
         seatColumn = int(request.form['seat'])
-        eTicketNumber = get_eTicketNumber(passengerName)
+        eTicketNumber = get_eTicketNumber(firstName)
 
         # Reserve seat if available
         if seating_chart[seatRow][seatColumn] == 'O':
