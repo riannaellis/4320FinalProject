@@ -87,6 +87,8 @@ def reserve_seat():
         else:
             flash(f"Row: {seatRow}, Seat: {seatColumn} is already assigned. Choose again.")
 
+        return redirect(url_for('reserve_seat'))
+
     return render_template('reserve_seat.html', seating_chart=seating_chart, rows=len(seating_chart), seats_per_row=seats_per_row)
 
 def get_eTicketNumber(passengerName):
@@ -103,7 +105,7 @@ def get_eTicketNumber(passengerName):
         min_length = length_course
     
     for i in range(min_length):
-        eTicketNumber = "".join(passengerName[1] + course[1])
+        eTicketNumber += "".join(passengerName[i] + course[i])
     
     eTicketNumber += passengerName[min_length:] + course[min_length:]
 
