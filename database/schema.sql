@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS reservations;
+-- DROP TABLE IF EXISTS reservations;
 
-CREATE TABLE reservations (
+CREATE TABLE IF NOT EXISTS reservations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     passengerName TEXT NOT NULL,
     seatRow INTEGER NOT NULL,
@@ -9,9 +9,9 @@ CREATE TABLE reservations (
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS admins;
+-- DROP TABLE IF EXISTS admins;
 
-CREATE TABLE admins (
+CREATE TABLE IF NOT EXISTS admins (
     username TEXT PRIMARY KEY,
     password TEXT NOT NULL
 );
