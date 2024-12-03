@@ -11,7 +11,15 @@
         <h1>Reserve Your Seat</h1>
         <div class="seating-chart">
             <p>X = Reserved Seat : O = Available Seat</p>
-            <pre>{{ seating_chart }}</pre>
+            <table>
+                {% for row in seating_chart %}
+                    <tr>
+                        {% for seat in row %}
+                            <td>{{ seat }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
         <form method="POST">
             <div class="form-group">
