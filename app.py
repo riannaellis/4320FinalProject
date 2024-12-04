@@ -63,7 +63,42 @@ def admin_login():
 # Create route for admin dashboard
 @app.route("/admin-dashboard")
 def admin_dashboard():
-    return render_template("admin_dashboard.html")
+    # Connect to the database
+    mydb = sqlite3.connect("database/reservations.db")
+    cursor = mydb.cursor()
+    
+    # Fetch all reserved seats
+    query = "SELECT seatRow, seatColumn FROM reservations;"
+    cursor.execute(query)
+    reserved_seats = cursor.fetchall()
+    
+    #Function to generate cost matrix for flights
+    #Input: none
+    #Output: Returns a 12 x 4 matrix of prices
+    def get_cost_matrix():
+        cost_matrix = [[100, 75, 50, 100] for row in range(12)]
+        return cost_matrix
+    
+    # Generate seating chart (12 rows x 4 seats)
+    rows, seats_per_row = 12, 4
+    seating_chart = [['O' for _ in range(seats_per_row)] for _ in range(rows)]
+    
+    # Mark reserved seats with 'X'
+    for row, col in reserved_seats:
+        seating_chart[row][col] = 'X'
+
+    # Generate the cost matrix
+    cost_matrix = get_cost_matrix()
+
+    # Calculate total sales
+    total_sales = sum(cost_matrix[row][col] for row, col in reserved_seats)
+
+    # Return the admin dashboard template
+    return render_template(
+        "admin_dashboard.html",
+        total_sales=total_sales,
+        seating_chart=seating_chart
+    )
 
 # Create app route for reserve
 @app.route("/reserve", methods=["GET", "POST"])

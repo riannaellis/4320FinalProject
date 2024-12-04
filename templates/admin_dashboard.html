@@ -20,14 +20,36 @@
         <div class="content">
 
             {%for message in get_flashed_messages()%}
-                <div class="alert">
-                    {{ message }}
-                </div>
+            <div class="alert">
+                {{ message }}
+            </div>
             {%endfor%}
             {% block content %} {% endblock %}
         </div>
+        <h1>Admin Dashboard</h1>
+        <h2>Total Sales: ${{ total_sales }}</h2>
+
         <h1>Seating Chart</h1>
-        
+        <table>
+            <thead>
+                <tr>
+                    <th>Row</th>
+                    <th>Seats</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in seating_chart %}
+                <tr>
+                    <td>{{ loop.index0 }}</td>
+                    <td>
+                        {% for seat in row %}
+                        <span class="seat {{ 'reserved' if seat == 'X' else 'available' }}">{{ seat }}</span>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 </body>
