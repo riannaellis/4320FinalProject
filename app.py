@@ -60,45 +60,59 @@ def admin_login():
 
     return render_template('admin_login.html') 
 
-# Create route for admin dashboard
+'''
+Function to generate cost matrix for flights
+Input: none
+Output: Returns a 12 x 4 matrix of prices
+'''
+def get_cost_matrix():
+    cost_matrix = [[100, 75, 50, 100] for row in range(12)]
+    return cost_matrix
+
+# Create app route for admin dashboard
 @app.route("/admin-dashboard")
 def admin_dashboard():
-    # Connect to the database
-    mydb = sqlite3.connect("database/reservations.db")
-    cursor = mydb.cursor()
+    # Seat configuration
+    rows = 12
+    seats_per_row = 4
     
-    # Fetch all reserved seats
+    # Initialize seating chart 
+    seating_chart = [['O' for _ in range(seats_per_row)] for _ in range(rows)]
+    
+    # Get reserved seats from the database
+    mydb = sqlite3.connect("database/reservations.db")
+    mydb.row_factory = sqlite3.Row
+    cursor = mydb.cursor()
     query = "SELECT seatRow, seatColumn FROM reservations;"
     cursor.execute(query)
     reserved_seats = cursor.fetchall()
     
-    #Function to generate cost matrix for flights
-    #Input: none
-    #Output: Returns a 12 x 4 matrix of prices
-    def get_cost_matrix():
-        cost_matrix = [[100, 75, 50, 100] for row in range(12)]
-        return cost_matrix
-    
-    # Generate seating chart (12 rows x 4 seats)
-    rows, seats_per_row = 12, 4
-    seating_chart = [['O' for _ in range(seats_per_row)] for _ in range(rows)]
-    
-    # Mark reserved seats with 'X'
-    for row, col in reserved_seats:
-        seating_chart[row][col] = 'X'
+    # Mark reserved seats as 'X'
+    for seat in reserved_seats:
+        seat_row = seat['seatRow']
+        seat_column = seat['seatColumn']
+        seating_chart[seat_row][seat_column] = 'X'
 
-    # Generate the cost matrix
-    cost_matrix = get_cost_matrix()
+    # calculate total sales using the cost matrix
+    cost_matrix = get_cost_matrix()  # Get the cost matrix
+    total_sales = 0
 
-    # Calculate total sales
-    total_sales = sum(cost_matrix[row][col] for row, col in reserved_seats)
+    # calculate the total sales based on seat prices
+    for seat in reserved_seats:
+        seat_row = seat['seatRow']
+        seat_column = seat['seatColumn']
+        seat_price = cost_matrix[seat_row][seat_column]  # Get price from cost matrix
+        total_sales += seat_price  # Add to total sales
 
-    # Return the admin dashboard template
+    # Render the admin dashboard with seating chart and total sales
     return render_template(
         "admin_dashboard.html",
-        total_sales=total_sales,
-        seating_chart=seating_chart
+        seating_chart=seating_chart,
+        rows=rows,
+        seats_per_row=seats_per_row,
+        total_sales=total_sales
     )
+
 
 # Create app route for reserve
 @app.route("/reserve", methods=["GET", "POST"])
@@ -167,15 +181,7 @@ def get_eTicketNumber(passengerName):
     return eTicketNumber
 
 
-
-
-
-
-
-
-
-
 # Run the Flask app
 if __name__ == "__main__":
     initialize_database()
-    app.run(debug=True, host="0.0.0.0", port=5001)
+    app.run(debug=True, host="0.0.0.0", port=5004)

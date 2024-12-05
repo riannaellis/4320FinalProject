@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 600px;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 120px auto;
+    margin-top: 50px;
+}
+
+h1 {
+    background-color: #fff;
+    padding: 10px 0;
+    border-bottom: 2px solid black;
+    text-align: center;
+}
+
+.seating-chart {
+    text-align: center;
+    font-family: monospace;
+    background-color: #f4f4f4;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input, select, button {
+    width: 75%; 
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 12px; /* Add spacing between fields */
+}
+
+button {
+    width: 35%; /* Ensure the button takes the full width */
+    padding: 10px; /* Make the button more comfortable to click */
+    font-size: 14px;
+    margin-top: 15px; /* Add some space before the button */
+    border: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.alert {
+    padding: 20px;
+    margin: 5px;
+    color: #970020;
+    background-color: #ffd5de;
+}
+
+nav {
+    width: 100%; 
+    background-color: #fff; 
+    border-bottom: 2px solid black; 
+    padding: 25px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0; 
+    text-align: center; 
+}
+
+nav ul li {
+    display: inline; 
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}

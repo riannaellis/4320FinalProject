@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/static/reservestyle.css">
+    <link rel="stylesheet" href="/static/admindashboard.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/admin-login">Admin</a></li>
+                <li><a href="/admin-login">Admin Login</a></li>
                 <li><a href="/reserve">Reservations</a></li>
             </ul>
         </nav>
@@ -19,38 +19,50 @@
     <div class="container">
         <div class="content">
 
-            {%for message in get_flashed_messages()%}
-            <div class="alert">
-                {{ message }}
+            {% for message in get_flashed_messages() %}
+                <div class="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
+            <h1>Admin Dashboard</h1>
+
+            <h4>Print seating chart...</h4>
+
+            <div class="seating-chart">
+        
+                <p>X = Reserved Seat | O = Available Seat</p>
+                <table>
+                    {% for row in seating_chart %}
+                        <tr>
+                            {% for seat in row %}
+                                <td>{{ seat }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
-            {%endfor%}
-            {% block content %} {% endblock %}
+
+            <div class="total-sales">
+
+                <p>Total Sales: ${{ total_sales }}</p>
+            </div>
+            <!-- Admin Login Form -->
+            <div class="admin-login-form">
+    
+                <form action="{{ url_for('admin_login') }}" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Login</button>
+    </form>
+            </div>
+
         </div>
-        <h1>Admin Dashboard</h1>
-        <h2>Total Sales: ${{ total_sales }}</h2>
-
-        <h1>Seating Chart</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Row</th>
-                    <th>Seats</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in seating_chart %}
-                <tr>
-                    <td>{{ loop.index0 }}</td>
-                    <td>
-                        {% for seat in row %}
-                        <span class="seat {{ 'reserved' if seat == 'X' else 'available' }}">{{ seat }}</span>
-                        {% endfor %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
-
 </body>
 </html>
+
